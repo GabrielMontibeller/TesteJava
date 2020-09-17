@@ -23,6 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return repository.save(cust);
 	}
 
+	@Override
 	public List<Customer> getAllUsers(){
 		List<Customer> custs = new ArrayList<Customer>();
 		repository.findAll().forEach(cust -> custs.add(cust));

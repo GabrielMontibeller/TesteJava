@@ -1,5 +1,6 @@
 package com.example.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,16 +26,21 @@ import com.example.api.dto.CustomerDTO;
 import com.example.api.response.Response;
 import com.example.api.service.CustomerService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/customers")
+@Api(value="API REST Clientes")
 public class CustomerController {
 	
 	@Autowired
 	private CustomerService service;
-	
+
 	
 	@PostMapping
+	@ApiOperation(value="Adiciona um cliente")
 	public ResponseEntity<Response<CustomerDTO>> create(@Valid @RequestBody CustomerDTO dto, BindingResult result) {
 
 		Response<CustomerDTO> response = new Response<CustomerDTO>();
@@ -52,6 +59,7 @@ public class CustomerController {
 	
 	
 	@PutMapping(value = "/{id}")
+	@ApiOperation(value="Atualiza um cliente")
 	public ResponseEntity<Response<CustomerDTO>> update(@Valid @RequestBody CustomerDTO dto, BindingResult result){
 		
 		Response<CustomerDTO> response = new Response<CustomerDTO>();
@@ -78,6 +86,7 @@ public class CustomerController {
 	
 	
 	@DeleteMapping(value = "/{id}")
+	@ApiOperation(value="Deleta um cliente")
 	public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
 		Response<String> response = new Response<String>();
 
