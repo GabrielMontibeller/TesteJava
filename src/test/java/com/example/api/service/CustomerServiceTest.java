@@ -46,18 +46,6 @@ public class CustomerServiceTest {
 		assertNotNull(response);
 	}
 	
-	@Test
-	public void testFindAllPage() {
-		List<Customer> list = new ArrayList<>();
-		list.add(getMockCustomer());
-		Page<Customer> page = new PageImpl(list);
-		
-		BDDMockito.given(repository.findAllPage(Mockito.any(Customer.class),  Mockito.any(PageRequest.class))).willReturn(page);
-	
-		Page<Customer> response = service.findAllPage(new Customer(), 0 );
-		
-        assertNotNull(response);
-	}
 	
 	private Customer getMockCustomer() {
 		Customer cust = new Customer();

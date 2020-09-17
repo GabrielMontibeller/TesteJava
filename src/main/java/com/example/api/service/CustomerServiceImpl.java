@@ -1,13 +1,14 @@
 package com.example.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.api.domain.Customer;
 import com.example.api.repository.CustomerRepository;
+
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -15,21 +16,17 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	CustomerRepository repository;
 	
-	@Value("${pagination.customers_per_page}")
-	private int customerPerPage;
 
 	@Override
 	public Customer save(Customer cust) {
 		return repository.save(cust);
 	}
 
-	@Override
-	public Page<Customer> findAllPage(Customer cust, int page) {
-		
-		@SuppressWarnings("deprecation")
-		PageRequest pg = new PageRequest(page, customerPerPage);
-		
-		return repository.findAllPage(cust, pg);
+	public List<Customer> getAllUsers(){
+		List<Customer> custs = new ArrayList<Customer>();
+		repository.findAll().forEach(cust -> custs.add(cust));
+		return custs;
 	}
+
 
 }
