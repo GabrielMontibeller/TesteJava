@@ -2,6 +2,7 @@ package com.example.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,17 @@ public class CustomerServiceImpl implements CustomerService {
 		List<Customer> custs = new ArrayList<Customer>();
 		repository.findAll().forEach(cust -> custs.add(cust));
 		return custs;
+	}
+
+	@Override
+	public Optional<Customer> findById(Long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+		
 	}
 
 

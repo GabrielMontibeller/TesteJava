@@ -3,6 +3,8 @@ package com.example.api.controller;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -52,6 +54,22 @@ public class CustomerControllerTest {
 		 .andExpect(jsonPath("$.data.name").value(NAME))
 		 .andExpect(jsonPath("$.data.email").value(EMAIL));
 		 
+	}
+	
+	@Test
+	public void testUpdate() throws Exception{
+		String name = "novo name";
+		
+		BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.of(getMockCustomer()));
+		BDDMockito.given(service.save(Mockito.any(Customer.class))).willReturn(new Customer(1L, name, EMAIL));
+		
+		mvc.perform(MockMvcRequestBuilders.put(URL).content(getJsonPayload())
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data.id").value(ID))
+		.andExpect(jsonPath("$.data.name").value(name))
+		.andExpect(jsonPath("$.data.email").value(EMAIL));
 	}
 	
 	private Customer getMockCustomer() {

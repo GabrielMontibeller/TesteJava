@@ -1,14 +1,18 @@
 package com.example.api.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +44,30 @@ public class CustomerController {
 
 		response.setData(this.convertEntityToDto(cust));
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+	
+	
+	@PutMapping
+	public ResponseEntity<Response<CustomerDTO>> update(@Valid @RequestBody CustomerDTO dto, BindingResult result){
+		
+		Response<CustomerDTO> response = new Response<CustomerDTO>();
+		
+		Optional<Customer> cust = service.findById(dto.getId());
+		
+		if(!cust.isPresent()) {
+			result.addError(new ObjectError("Customer", "Customer não encontrado"));
+		}
+		
+		if(result.hasErrors()) {
+			result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
+			
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		Customer saved = service.save(this.convertDtoToEntity(dto));
+		
+		response.setData(this.convertEntityToDto(saved));
+		return ResponseEntity.ok().body(response);
 	}
 //	@DeleteMapping(value = "/{id}")
 //	public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
