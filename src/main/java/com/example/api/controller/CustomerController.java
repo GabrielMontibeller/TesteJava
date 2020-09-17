@@ -1,5 +1,6 @@
 package com.example.api.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,12 +24,14 @@ import com.example.api.dto.CustomerDTO;
 import com.example.api.response.Response;
 import com.example.api.service.CustomerService;
 
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
 	
 	@Autowired
 	private CustomerService service;
+	
 	
 	@PostMapping
 	public ResponseEntity<Response<CustomerDTO>> create(@Valid @RequestBody CustomerDTO dto, BindingResult result) {
@@ -47,7 +51,7 @@ public class CustomerController {
 	}
 	
 	
-	@PutMapping
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<Response<CustomerDTO>> update(@Valid @RequestBody CustomerDTO dto, BindingResult result){
 		
 		Response<CustomerDTO> response = new Response<CustomerDTO>();
@@ -69,6 +73,10 @@ public class CustomerController {
 		response.setData(this.convertEntityToDto(saved));
 		return ResponseEntity.ok().body(response);
 	}
+	
+	
+	
+	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
 		Response<String> response = new Response<String>();
