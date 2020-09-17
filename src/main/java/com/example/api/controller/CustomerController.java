@@ -69,21 +69,21 @@ public class CustomerController {
 		response.setData(this.convertEntityToDto(saved));
 		return ResponseEntity.ok().body(response);
 	}
-//	@DeleteMapping(value = "/{id}")
-//	public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
-//		Response<String> response = new Response<String>();
-//
-//		Optional<WalletItem> wi = service.findById(walletItemId);
-//
-//		if (!wi.isPresent()) {
-//			response.getErrors().add("WalletItem de id " + walletItemId + " não encontrada");
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//		}
-//		
-//		service.deleteById(walletItemId);
-//		response.setData("WalletItem de id "+ walletItemId + " apagada com sucesso");
-//		return ResponseEntity.ok().body(response);
-//	}
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
+		Response<String> response = new Response<String>();
+
+		Optional<Customer> cust = service.findById(id);
+
+		if (!cust.isPresent()) {
+			response.getErrors().add("Customer de id " + id + " não encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+		
+		service.deleteById(id);
+		response.setData("Customer de id "+ id + " apagado com sucesso");
+		return ResponseEntity.ok().body(response);
+	}
 
 	private Customer convertDtoToEntity(CustomerDTO dto) {
 		Customer cust = new Customer();

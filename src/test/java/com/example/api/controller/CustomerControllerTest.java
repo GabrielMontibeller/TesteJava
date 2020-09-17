@@ -72,6 +72,20 @@ public class CustomerControllerTest {
 		.andExpect(jsonPath("$.data.email").value(EMAIL));
 	}
 	
+	
+	@Test
+	public void testDelete() throws JsonProcessingException, Exception{
+		BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.of(new Customer()));
+		
+		mvc.perform(MockMvcRequestBuilders.delete(URL+"/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.data").value("Customer de id "+ ID + " apagado com sucesso"));
+		
+		
+	}
+	
 	private Customer getMockCustomer() {
 		Customer cust = new Customer(1L, NAME, EMAIL);
 		return cust;
